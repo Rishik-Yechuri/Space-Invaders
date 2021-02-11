@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 namespace Space_Invaders
@@ -7,6 +8,7 @@ namespace Space_Invaders
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SoundEffect gameSound;
         bool stopMoving = false;
         Alien[,] aliens = new Alien[8, 8];
         enum GameState { Left, Right, Down, Up }
@@ -31,12 +33,15 @@ namespace Space_Invaders
         }
         protected override void LoadContent()
         {
+          
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
             for (int x = 0; x < 8; x++)
             {
                 for (int y = 0; y < 8; y++)aliens[x, y].Text = this.Content.Load<Texture2D>("SpaceInvaders" + y);
             }
+            gameSound = Content.Load<SoundEffect>("Homeworld");
+            gameSound.Play();
         }
         protected override void Update(GameTime gameTime)
         {
@@ -53,29 +58,13 @@ namespace Space_Invaders
                 for (int j = 0; j < 8; j++)
                 {
                     if (gameState == GameState.Right /*&& aliens[i, j].Rect.X < 950*/) aliens[i, j].setPosition(5, true);
-                    /*else if (gameState == GameState.Right && aliens[i, j].Rect.X >= 950)
-                    {
-                        stopMoving = true;
-                        gameState = GameState.Down;
-                    }*/
+               
                     if (gameState == GameState.Down /*&& aliens[i, j].Rect.Y < 950*/) aliens[i, j].setPosition(5, false);
-                    /*else if (gameState == GameState.Down && aliens[i, j].Rect.Y >= 950)
-                    {
-                        stopMoving = true;
-                        gameState = GameState.Left;
-                     }*/
+                  
                      if (gameState == GameState.Left /*&& aliens[i, j].Rect.X > 70*/) aliens[i, j].setPosition(-5, true);
-                     /*else if (gameState == GameState.Left && aliens[i, j].Rect.X <= 70)
-                     {
-                        stopMoving = true;
-                        gameState = GameState.Up;
-                      }*/
+                
                       if (gameState == GameState.Up /*&& aliens[i, j].Rect.Y > 70*/) aliens[i, j].setPosition(-5, false);
-                      /*else if (gameState == GameState.Up && aliens[i, j].Rect.Y <= 70)
-                      {
-                        stopMoving = true;
-                        gameState = GameState.Right;
-                       }*/
+                  
                 }
             base.Update(gameTime);
         }
